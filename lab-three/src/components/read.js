@@ -1,8 +1,8 @@
 import React from "react";
 import bookData from "./books.json";
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import axios from "axios";
+import {Books} from "./books";
 
 //there is no book class for this, instead it directly goes to BookItems
 export class Read extends React.Component{
@@ -17,7 +17,11 @@ export class Read extends React.Component{
                 books: response.data // response.data - data without headers
             })
         }) 
-        .catch(); // If error
+        .catch( // If error
+            (error) => {
+                console.log(error); // Log error to console
+            }
+        ); 
     }
 
     state = {
@@ -25,35 +29,12 @@ export class Read extends React.Component{
     }
 
     render(){
-        // Returns BookItems rendered with data from each book
+        // Returns Books (list of book items)
         return(
             <div>
-                <h3>Hello from Read component</h3>
-                <h1>Read Component</h1>
-                {this.state.books.map((book)=>(
-                <BookItems
-                    title={book.title}
-                    isbn={book.isbn}
-                    pageCount={book.pageCount}
-                    thumbnailUrl={book.thumbnailUrl}
-                    statusB={book.status}
-                    authors={book.authors[0]}
-                    categories={book.categories}
-                />
-                ))}
+                <h3>Hello from my Read component!</h3>
+                <Books books={this.state.books}></Books>
             </div>
         );
     }
 }
-
-// Card for each book item (called from above)
-const BookItems = ({title, isbn, pageCount, thumbnailUrl,statusB, authors, categories}) => (
-    <Card>
-        <Card.Header>{title}</Card.Header>
-        <Card.Body>
-            <Card.Img src={thumbnailUrl} style={{width:'200px'}}/>
-            <Card.Text>{authors}</Card.Text>
-        </Card.Body>
-        
-    </Card>
-)
